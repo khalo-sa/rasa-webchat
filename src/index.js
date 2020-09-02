@@ -46,6 +46,8 @@ const ConnectedWidget = forwardRef((props, ref) => {
     emit(message, data) {
       if (this.socket) {
         this.socket.emit(message, data);
+        // execute callback for event 'user_uttered' as specified in prop 'onSocketEvent'
+        this.onSocketEvent.user_uttered(data)
       }
     }
 
@@ -121,12 +123,14 @@ const ConnectedWidget = forwardRef((props, ref) => {
   return (
     <Provider store={store}>
       <ThemeContext.Provider
-        value={{ mainColor: props.mainColor,
+        value={{
+          mainColor: props.mainColor,
           conversationBackgroundColor: props.conversationBackgroundColor,
           userTextColor: props.userTextColor,
           userBackgroundColor: props.userBackgroundColor,
           assistTextColor: props.assistTextColor,
-          assistBackgoundColor: props.assistBackgoundColor }}
+          assistBackgoundColor: props.assistBackgoundColor
+        }}
       >
         <Widget
           ref={ref}
@@ -247,10 +251,10 @@ ConnectedWidget.defaultProps = {
   tooltipPayload: null,
   tooltipDelay: 500,
   onWidgetEvent: {
-    onChatOpen: () => {},
-    onChatClose: () => {},
-    onChatVisible: () => {},
-    onChatHidden: () => {}
+    onChatOpen: () => { },
+    onChatClose: () => { },
+    onChatVisible: () => { },
+    onChatHidden: () => { }
   },
   disableTooltips: false,
   mainColor: '',
